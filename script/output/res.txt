@@ -1,0 +1,53 @@
+3:typedef uint32_t UI;
+9:std::string getBin(int x) {
+18:void addBin(std::string& res, int x) {
+29:        addBin(res, static_cast<int>(ctx[i]));
+38:    int k = ((448 - (res.size() + 1) % 512) % 512 + 512) % 512;
+56:inline UI S(UI x, int n) {
+60:inline UI R(UI x, int n) {
+89:std::string intToHex(int integerValue) {
+91:    ss << std::setfill('0') << std::setw(8) << std::hex << integerValue; 
+99:    int N = ctx.size() / 512;
+103:    for (int i = 1; i <= N; i++) {
+105:        int base = (i - 1) * 512;
+106:        for (int j = 0; j < 16; j++) {
+107:            for (int k = 0; k < 32; k++) {
+112:        for (int j = 0; j < 16; j++) W[j] = M[j];
+113:        for (int j = 16; j < 64; j++) {
+118:        for (int j = 0; j < 64; j ++) {
+134:    for (int i = 1; i <= 8; i++)
+136:         res16 += intToHex(H[N][i]);
+166:const int keys[] = {-44, 99, 78, -12, -84, -124, -117, 79, -3, -40, -31, 116, 48, -125, -88, 72};
+183:UI LL(UI x, int n) {
+195:UI Sbox(uint8_t a) {
+196:    int x = 0, y = 0;
+206:    for (int i = 0; i < 4; i++) {
+235:std::string toString8(int8_t x) {
+244:    for (int i = 0; i < 16; i++) {
+253:    for (int i = 0; i < 4; i++) {
+257:    for (int i = 0; i < 32; i++) {
+274:        for (int i = 0; i < 4; i++) {
+282:    for (int i = 0; i < 32; i++) {
+286:    for (int i = 0; i < 4; i++) {
+295:        for (int i = 0; i < 16; i++) {
+299:        int padding = 16 - ctx.size() % 16;
+300:        for (int i = 0; i < padding; i++) {
+377:        uint8_t byte = std::stoul(data.substr(i, 6), nullptr, 2);
+381:        int gap = 24 - data.size() % 24;
+396:int sm3_init(std::string& str) {
+397:    int l = str.size();
+399:    int k = (448 - (l + 1) % 512 + 512) % 512;
+410:void sm3_init_B(const std::string& str, const int n, std::vector<std::vector<UI>>& B) {
+411:    for (int i = 0; i < n; i++) {
+412:        for (int j = 0; j < 16; j++) {
+418:UI FF(int j, UI x, UI y, UI z) {
+426:UI GG(int j, UI x, UI y, UI z) {
+458:    // for (int i = 0; i < str.size(); i ++) {
+463:    int n = sm3_init(str);
+473:    auto messageExtend = [B, &W, &W1](int i) -> void {
+485:    auto sm3_T = [](int j) -> UI {
+489:    auto CF = [&sm3_T, &messageExtend, &W1, &W](int i, std::vector<UI> v) -> std::vector<UI> {
+492:        for (int j = 0; j < 64; j++) {
+510:        for (int i = 0; i < 8; i++) {
+516:    for (int i = 0; i < n; i++) {
+521:    for (int i = 0; i < 8; i++) {
