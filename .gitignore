@@ -1,0 +1,7 @@
+build/
+3rd/
+crt/
+temp/
+logs/
+lib/
+bin/
