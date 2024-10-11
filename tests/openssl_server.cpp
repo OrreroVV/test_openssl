@@ -55,8 +55,8 @@ void configure_context(SSL_CTX* ctx) {
         exit(EXIT_FAILURE);
     }
     // 客户端未验证证书，也不会失败
-    // SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
-    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER , NULL);
+    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
+    // SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
     SSL_CTX_set_verify_depth(ctx, 1);
 }
 

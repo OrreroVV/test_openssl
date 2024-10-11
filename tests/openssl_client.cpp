@@ -4,6 +4,8 @@
 #include <openssl/x509.h>
 #include <openssl/pem.h>
 #include <iostream>
+#include <fstream>
+#include <vector>
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <cstring>
@@ -55,11 +57,12 @@ SSL_CTX* create_context() {
 }
 
 void configure_context(SSL_CTX* ctx) {
-    // 客户端签名证书和私钥
-    if (SSL_CTX_use_certificate_file(ctx, "/home/hzh/workspace/test_openssl/crt/client_sign.crt", SSL_FILETYPE_PEM) <= 0) {
-        ERR_print_errors_fp(stderr);
-        exit(EXIT_FAILURE);
-    }
+    // // 客户端签名证书和私钥
+    // if (SSL_CTX_use_certificate_file(ctx, "/home/hzh/workspace/test_openssl/crt/client_sign.crt", SSL_FILETYPE_PEM) <= 0) {
+    //     ERR_print_errors_fp(stderr);
+    //     exit(EXIT_FAILURE);
+    // }
+
     if (SSL_CTX_use_PrivateKey_file(ctx, "/home/hzh/workspace/test_openssl/crt/client_sign.key", SSL_FILETYPE_PEM) <= 0) {
         ERR_print_errors_fp(stderr);
         exit(EXIT_FAILURE);
@@ -107,6 +110,42 @@ int main() {
     SSL* ssl = SSL_new(ctx);
     SSL_set_fd(ssl, sock);
     // SSL_CTX_set_cipher_list(ctx, "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256");
+
+
+    std::string file_path = "/home/hzh/workspace/test_openssl/crt/client_sign.crt";
+    int size = 0;
+    std::ifstream file(file_path, std::ios::binary);
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file: " << file_path << std::endl;
+        size = 0;
+    }
+
+    // 获取文件大小
+    file.seekg(0, std::ios::end);
+    size = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    // 分配内存
+    char* buffer = new char[size];
+    if (!buffer) {
+        std::cerr << "Failed to allocate memory for file." << std::endl;
+        size = 0;
+    }
+    file.read(buffer, size);
+
+    BIO *bio = NULL;
+    X509 * x509 __attribute__((unused));
+
+    bio = BIO_new(BIO_s_mem());
+    BIO_write(bio, buffer, size);
+    x509 = PEM_read_bio_X509(bio, NULL, NULL, NULL);
+    if (SSL_use_certificate(ssl, x509) <= 0) {
+        std::cerr << "Failed to use certificate." << std::endl;
+        X509_free(x509); // 释放 X509 对象
+        return -1;
+    }
+
+
 
 
     if (SSL_connect(ssl) <= 0) {

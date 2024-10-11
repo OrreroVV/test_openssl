@@ -1,0 +1,54 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "clean cmake",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "clean"
+            ],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "make clean",
+			"options": {
+                "cwd": "${workspaceFolder}/build" 
+            }
+        },
+        {
+            "label": "cmake",
+            "type": "shell",
+            "command": "make",
+            "args": [ 
+			".."
+			],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "cmake",
+			"options": {
+                "cwd": "${workspaceFolder}/build" 
+            }
+        },
+		{
+            "label": "make",
+            "type": "shell",
+            "command": "make",
+            "args": [ 
+			"-j8"
+			],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "make",
+			"options": {
+                "cwd": "${workspaceFolder}/build" 
+            }
+        },
+        {
+            "label": "build",  // 新任务
+            "dependsOn": ["cmake", "make"],  // 依赖于 build1 和 build2
+            "type": "shell",
+            "command": "",
+            "problemMatcher": []
+        }
+    ]
+}

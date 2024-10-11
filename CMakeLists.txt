@@ -45,6 +45,7 @@ set(LIB_SRC
     code/util.cpp
     code/Demo.cpp
     code/httpgmssl.cpp
+    code/create_tun.cpp
     )
 
 add_library(hzh SHARED ${LIB_SRC})
@@ -64,6 +65,13 @@ set(LIB_LIB
     -lpthread
 )
 
+add_executable(main tests/main.cpp)
+add_dependencies(main hzh)
+target_link_libraries(main ${LIB_LIB})
+
+add_executable(test tests/test.cpp)
+add_dependencies(test hzh)
+target_link_libraries(test ${LIB_LIB})
 
 add_executable(server tests/openssl_server.cpp)
 add_dependencies(server hzh)
